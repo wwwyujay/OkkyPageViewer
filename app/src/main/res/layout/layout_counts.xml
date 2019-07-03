@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:baselineAligned="true">
+
+    <ImageView
+        android:id="@+id/post-list-img-view"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="3dp"
+        android:src="@drawable/ic_visibility"/>
+
+    <TextView
+        android:id="@+id/post-list-count-views"
+        android:layout_toRightOf="@id/post-list-img-view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:text="00"
+        android:textSize="12sp"
+        android:textColor="@android:color/black"/>
+
+    <ImageView
+        android:id="@+id/post-list-img-like"
+        android:layout_toRightOf="@id/post-list-count-views"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="3dp"
+        android:src="@drawable/ic_favorite"/>
+
+    <TextView
+        android:id="@+id/post-list-count-likes"
+        android:layout_toRightOf="@id/post-list-img-like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:text="00"
+        android:textSize="12sp"
+        android:textColor="@android:color/black"/>
+
+    <ImageView
+        android:id="@+id/post-list-img-comment"
+        android:layout_toRightOf="@id/post-list-count-likes"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="3dp"
+        android:src="@drawable/ic_comment"/>
+
+    <TextView
+        android:id="@+id/post-list-count-comments"
+        android:layout_toRightOf="@id/post-list-img-comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="00"
+        android:textSize="12sp"
+        android:textColor="@android:color/black"/>
+
+</RelativeLayout>

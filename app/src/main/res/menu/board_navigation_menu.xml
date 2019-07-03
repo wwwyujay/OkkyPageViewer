@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/board-group-notice">
+
+        <!-- 공지사항 -->
+        <item
+            android:id="@+id/board-notice"
+            android:title="@string/board_notice"/>
+
+        <!-- 띵언게시판 -->
+        <item
+            android:id="@+id/board-dding"
+            android:title="@string/board_dding" />
+
+        <!-- 웜역사관 -->
+        <item
+            android:id="@+id/board-womstory"
+            android:title="@string/board_womstory" />
+
+    </group>
+
+    <group
+        android:id="@+id/board-group-freeboard">
+
+        <!-- 최신글 -->
+        <item
+            android:id="@+id/board-latest"
+            android:title="@string/board_latest" />
+
+        <!-- 자유게시판 -->
+        <item
+            android:id="@+id/board-freeboard"
+            android:title="@string/board_freeboard" />
+
+        <!-- 웜스플레인 -->
+        <item
+            android:id="@+id/board-womsplain"
+            android:title="@string/board_womsplain" />
+
+        <!-- 재활병원 -->
+        <item
+            android:id="@+id/board-hospital"
+            android:title="@string/board_hospital" />
+
+        <!-- 사이트건의 -->
+        <item
+            android:id="@+id/board-website"
+            android:title="@string/board_website" />
+
+        <!-- 데스노트 -->
+        <item
+            android:id="@+id/board-deathnote"
+            android:title="@string/board_deathnote" />
+
+        <!-- 마포대교밑 -->
+        <item
+            android:id="@+id/board-mapo"
+            android:title="@string/board_mapo"/>
+
+    </group>
+
+    <group
+        android:id="@+id/board-group-best">
+
+        <!-- 워념글 -->
+        <item
+            android:id="@+id/best-wonyum"
+            android:title="@string/best_wonyum" />
+
+        <!-- 일간베스트 -->
+        <item
+            android:id="@+id/best-dailybest"
+            android:title="@string/best_dailybest" />
+
+        <!-- 주간베스트 -->
+        <item
+            android:id="@+id/best-weeklybest"
+            android:title="@string/best_weeklybest" />
+
+        <!-- 월간베스트 -->
+        <item
+            android:id="@+id/best-monthlybest"
+            android:title="@string/best_monthlybest" />
+        
+    </group>
+
+    <group
+        android:id="@+id/board-group-extra">
+
+        <!-- 프로젝트 -->
+        <item
+            android:id="@+id/board-project"
+            android:title="@string/board_project" />
+
+        <!-- Global -->
+        <item
+            android:id="@+id/board-global"
+            android:title="@string/board_global" />
+        
+    </group>
+
+</menu>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:background="@drawable/border_layout">
+
+    <LinearLayout
+        android:id="@+id/layout_board_and_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Board -->
+        <TextView
+            android:id="@+id/post-list-board"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="5dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:textStyle="bold"
+            android:textSize="12sp"
+            android:textColor="@android:color/black"/>
+
+        <!-- Category -->
+        <TextView
+            android:id="@+id/post-list-category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/shape_rounded_corner"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"/>
+
+    </LinearLayout>
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/post-list-title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_board_and_category"
+        android:layout_marginBottom="8dp"
+        android:textSize="14sp"
+        android:singleLine="true"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"/>
+
+    <!-- Writer -->
+    <TextView
+        android:id="@+id/post-list-writer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/post-list-title"
+        android:layout_marginEnd="5dp"
+        android:textSize="12sp"
+        android:textColor="@android:color/black"/>
+
+    <!-- Divider writer / created-at -->
+    <TextView
+        android:id="@+id/post-list-divider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/post-list-writer"
+        android:layout_alignBaseline="@id/post-list-writer"
+        android:layout_marginEnd="5dp"
+        android:text="@string/divider"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        android:textColor="@android:color/black"/>
+
+    <!-- Created time -->
+    <TextView
+        android:id="@+id/post-list-created-at"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/post-list-writer"
+        android:layout_toEndOf="@id/post-list-divider"
+        android:textSize="12sp"
+        android:textColor="@android:color/black"/>
+
+    <!-- Counts of views, likes and comments -->
+    <include
+        layout="@layout/layout_counts"
+        android:layout_alignBottom="@id/post-list-writer"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp">
+
+    <!-- Writer -->
+    <TextView
+        android:id="@+id/comment-writer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:layout_marginStart="10dp"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"/>
+
+    <!-- Parent comment writer -->
+    <TextView
+        android:id="@+id/comment-reply-to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/comment-writer"
+        android:layout_alignBaseline="@id/comment-writer"
+        android:layout_marginStart="5dp"
+        android:background="@drawable/shape_rounded_corner"
+        android:textSize="12sp"
+        android:textColor="@android:color/white"/>
+
+    <!-- Creation time -->
+    <TextView
+        android:id="@+id/comment-created-at"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/comment-writer"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:textSize="12sp"
+        android:textColor="@android:color/darker_gray"/>
+
+    <!-- Content -->
+    <TextView
+        android:id="@+id/comment-detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/comment-created-at"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="12sp"
+        android:textColor="@android:color/black"/>
+
+    <View
+        style="@style/Divider"
+        android:layout_below="@id/comment-detail"/>
+
+</RelativeLayout>

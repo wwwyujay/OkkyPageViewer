@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillAfter="true">
+
+    <!-- "00%": RELATIVE_TO_SELF, "00%p": RELATIVE_TO_PARENT, "00": ABSOLUTE -->
+    <rotate
+        android:interpolator="@android:anim/accelerate_interpolator"
+        android:duration="700"
+        android:fromDegrees="0"
+        android:toDegrees="360"
+        android:pivotX="50%"
+        android:pivotY="50%"/>
+</set>
