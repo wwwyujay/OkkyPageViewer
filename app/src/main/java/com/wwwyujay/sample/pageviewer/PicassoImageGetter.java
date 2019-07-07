@@ -1,4 +1,4 @@
-package jaggy.like.moves.pageviewer;
+package com.wwwyujay.sample.pageviewer;
 /*
 * Copyright 2018 Ha Duy Trung
 * Licensed under the Apache License, Version 2.0 (the "License");

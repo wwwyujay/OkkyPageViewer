@@ -1,4 +1,4 @@
-package jaggy.like.moves.pageviewer;
+package com.wwwyujay.sample.pageviewer;
 
 import android.os.AsyncTask;
 import android.os.Bundle;

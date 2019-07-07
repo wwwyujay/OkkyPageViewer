@@ -1,4 +1,4 @@
-package jaggy.like.moves.pageviewer;
+package com.wwwyujay.sample.pageviewer;
 
 /**
  * Urls of boards from the original site
