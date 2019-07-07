@@ -61,7 +61,12 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
         Comment comment = comments.get(position);
         holder.commentWriter.setText(comment.getWriter());
         holder.commentCreatedAt.setText(comment.getCreatedAt().toString());
-        holder.commentDetail.setText(Html.fromHtml(comment.getDetail()));
+        //holder.commentDetail.setText(Html.fromHtml(comment.getDetail()));
+        holder.commentDetail.setText(
+                Html.fromHtml(
+                        comment.getDetail(),
+                        new PicassoImageGetter(holder.commentDetail),
+                        null));
 
         return convertView;
     }
