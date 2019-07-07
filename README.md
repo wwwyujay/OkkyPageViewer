@@ -2,6 +2,8 @@
 
 개발자 커뮤니티 OKKY(https://okky.kr) 페이지를 보기 위해 개인용 및 연습용으로 개발된 앱입니다.
 
+![Screenshot](screenshot(1).png)
+
 
 ### 앱 동작시연 동영상
 https://youtu.be/gJKmAVXX9Ns
