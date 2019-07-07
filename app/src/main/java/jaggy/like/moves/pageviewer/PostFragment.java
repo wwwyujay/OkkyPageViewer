@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,7 @@ import org.jsoup.nodes.Document;
 public class PostFragment extends Fragment implements View.OnClickListener {
 
     String link;    // Link of the selected Post
-    TextView category, title, writer, createdAt, content, commentCount;
+    TextView board, title, writer, createdAt, content, commentCount;
     View showComments; // Works as a button to show a Comment dialog
 
     Post post;
@@ -34,12 +35,13 @@ public class PostFragment extends Fragment implements View.OnClickListener {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /* Receive data from the activity (former fragment) */
+        /* Receive data from the activity (former dialog) */
         Bundle data = getArguments();
         if (data == null || data.isEmpty()) {
             getFragmentManager().popBackStack();    // Go back
         } else {
             link = data.getString("link");
+            Log.d("okky", "received data: "+link);
         }
 
         /* Switch navigation button to back button */
@@ -49,19 +51,19 @@ public class PostFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        /* When destroy this fragment, switch back button to navigation button */
+        /* When destroy this dialog, switch back button to navigation button */
         ((MainActivity)getActivity()).showBackButton(false);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        /* Inflate a root view and initialise the fragment */
+        /* Inflate a root view and initialise the dialog */
         View view = inflater.inflate(R.layout.fragment_post, container, false);
         initFragment(view);
 
         /* Fetch a post with given url */
-        new FetchPost(post).execute(Urls.BASE_URL_MOBILE, link);
+        new FetchPost(post).execute(Urls.BASE_URL, link);
 
         return view;
     }
@@ -69,10 +71,10 @@ public class PostFragment extends Fragment implements View.OnClickListener {
     /**
      * Initialize layout: binding view references, setting up views, adapting listeners, etc.
      *
-     * @param root Root view of the fragment.
+     * @param root Root view of the dialog.
      */
     private void initFragment(View root) {
-        category = (TextView)root.findViewById(R.id.post_category);
+        board = (TextView)root.findViewById(R.id.post_board);
         title = (TextView)root.findViewById(R.id.post_title);
         writer = (TextView)root.findViewById(R.id.post_writer);
         createdAt = (TextView)root.findViewById(R.id.post_created_at);
@@ -120,7 +122,7 @@ public class PostFragment extends Fragment implements View.OnClickListener {
                 v.startAnimation(refreshAnimation);
 
                 /* Reload current page */
-                new FetchPost(post).execute(Urls.BASE_URL_MOBILE, link);
+                new FetchPost(post).execute(Urls.BASE_URL, link);
                 break;
         }
     }
@@ -131,7 +133,7 @@ public class PostFragment extends Fragment implements View.OnClickListener {
     private class FetchPost extends AsyncTask<Object, Void, Document> {
 
         Post post;
-        private LoadingFragment fragment;
+        private LoadingFragment dialog;
 
         protected FetchPost(Post post) {
             super();
@@ -149,9 +151,9 @@ public class PostFragment extends Fragment implements View.OnClickListener {
             }
             transaction.addToBackStack(null);
 
-            fragment = new LoadingFragment();
-            fragment.setCancelable(false);
-            fragment.show(transaction, "dialog");
+            dialog = new LoadingFragment();
+            dialog.setCancelable(false);
+            dialog.show(transaction, "dialog");
         }
 
         @Override
@@ -172,6 +174,7 @@ public class PostFragment extends Fragment implements View.OnClickListener {
                         .followRedirects(true) // added
                         .get();
             } catch (Exception e) {
+                dialog.dismissAllowingStateLoss();
                 e.printStackTrace();
             } finally {
                 return doc;
@@ -184,28 +187,35 @@ public class PostFragment extends Fragment implements View.OnClickListener {
             if (document != null)
             {
                 /* Set comment count TextView */
-                int count = document.getElementsByClass("commentEl").size();
+                String count = document.select("#note-count").text();
                 commentCount.setText("["+count+"]");
 
-                /* Get a Post object from the document */
-                post = Post.parseDocumentToPost(document);
+                /* Extract strings from the document */
+                String t = document.select("h2.panel-title").text();    /* title */
+                String w = document.select("div.panel-heading a.nickname").text();    /* writer */
+                String c = document.select("div.panel-heading span.timeago").text();    /* created-at */
+                String b = document.select("a.label-info").text();  /* board */
+                String d = document.select("article.content-text").toString();  /* content */
 
                 /* Update views */
-                title.setText(post.getTitle());
-                writer.setText(post.getWriter());
-                createdAt.setText(post.getCreatedAt());
-
-                if (post.getCategory() != null && !post.getCategory().isEmpty()) {
-                    category.setText(post.getCategory());
-                    category.setVisibility(View.VISIBLE);
+                title.setText(t);
+                writer.setText(w);
+                createdAt.setText(c);
+                
+                if (b != null && !b.isEmpty()) {
+                    board.setText(b);
+                    board.setVisibility(View.VISIBLE);
                 }
 
                 /* Update content view (with a ImageGetter) */
-                content.setText(Html.fromHtml(post.getContent(), new PicassoImageGetter(content), null));
+                content.setText(Html.fromHtml(d, new PicassoImageGetter(content), null));
+            } else {
+                dialog.dismissAllowingStateLoss();
+                getFragmentManager().popBackStack();
             }
 
             /* Dismiss the process dialog */
-            fragment.dismissAllowingStateLoss();
+            dialog.dismissAllowingStateLoss();
         }
     }
 }

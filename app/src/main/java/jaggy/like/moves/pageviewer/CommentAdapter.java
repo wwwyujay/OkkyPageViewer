@@ -2,6 +2,7 @@ package jaggy.like.moves.pageviewer;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,6 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
 
             holder = new CommentHolder();
             holder.commentWriter = (TextView)convertView.findViewById(R.id.comment_writer);
-            holder.commentReplyTo = (TextView)convertView.findViewById(R.id.comment_reply_to);
             holder.commentCreatedAt = (TextView)convertView.findViewById(R.id.comment_created_at);
             holder.commentDetail = (TextView)convertView.findViewById(R.id.comment_detail);
 
@@ -61,14 +61,7 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
         Comment comment = comments.get(position);
         holder.commentWriter.setText(comment.getWriter());
         holder.commentCreatedAt.setText(comment.getCreatedAt().toString());
-        holder.commentDetail.setText(comment.getDetail());
-
-        /* Show or hide the reply-to field by whether the comment has parent comment or not. */
-        if (comment.getReplyTo()==null || comment.getReplyTo().isEmpty()) {
-            holder.commentReplyTo.setVisibility(View.GONE);
-        } else {
-            holder.commentReplyTo.setText("@"+comment.getReplyTo());
-        }
+        holder.commentDetail.setText(Html.fromHtml(comment.getDetail()));
 
         return convertView;
     }
@@ -76,7 +69,6 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
     static class CommentHolder {
 
         TextView commentWriter;
-        TextView commentReplyTo;
         TextView commentCreatedAt;
         TextView commentDetail;
     }

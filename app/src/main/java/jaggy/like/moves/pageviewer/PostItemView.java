@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,11 +23,10 @@ public class PostItemView extends LinearLayout implements View.OnClickListener {
 
     private void initialize() {
         /* Inflate the root view */
-        inflate(getContext(), R.layout.post_list_item, this);
+        inflate(getContext(), R.layout.layout_post_item, this);
 
         /* Bind view references */
         board = (TextView)findViewById(R.id.post_list_board);
-        category = (TextView)findViewById(R.id.post_list_category);
         title = (TextView)findViewById(R.id.post_list_title);
         writer = (TextView)findViewById(R.id.post_list_writer);
         createdAt = (TextView)findViewById(R.id.post_list_created_at);
@@ -64,7 +62,6 @@ public class PostItemView extends LinearLayout implements View.OnClickListener {
     public void setPost(Post post) {
         number = post.getNumber(); // not used
         setBoard(post.getBoard());
-        setCategory(post.getCategory());
         setTitle(post.getTitle());
         setWriter(post.getWriter());
         setCreatedAt(post.getCreatedAt());
@@ -101,7 +98,7 @@ public class PostItemView extends LinearLayout implements View.OnClickListener {
             this.category.setVisibility(View.GONE);
 
         } else {
-            this.category.setText(category);    // when the post has category (category: O)
+            this.category.setText(category);    // when the post has board (board: O)
         }
     }
 

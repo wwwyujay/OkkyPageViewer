@@ -21,10 +21,10 @@
 
         </LinearLayout>
 
-        <!-- Page transition (arrows) -->
+        <!-- Page navigation (arrows) -->
         <include
-            android:id="@+id/page-transition"
-            layout="@layout/layout_page_transition"/>
+            android:id="@+id/page-navigation"
+            layout="@layout/layout_pagination"/>
 
     </LinearLayout>
 

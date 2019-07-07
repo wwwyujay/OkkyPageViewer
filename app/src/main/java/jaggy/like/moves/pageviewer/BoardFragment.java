@@ -41,7 +41,7 @@ public class BoardFragment extends Fragment implements View.OnClickListener, Vie
 
     private Integer lastPage, currentPage = 1;
     private EditText inputPage;
-    private ImageView goToFirst, goToLast, goPrevious, goNext;  // page transition button
+    private ImageView goToFirst, goToLast, goPrevious, goNext;  // page navigation button
 
     public BoardFragment() {
         // Required empty public constructor
@@ -58,8 +58,8 @@ public class BoardFragment extends Fragment implements View.OnClickListener, Vie
             boardName = data.getString("boardName");
 
         } else {
-            itemId = R.id.board_latest;
-            boardName = getString(R.string.board_latest);
+            itemId = R.id.board_community_all;
+            boardName = getString(R.string.community_all);
         }
     }
 
@@ -73,54 +73,38 @@ public class BoardFragment extends Fragment implements View.OnClickListener, Vie
         
         /* Change fragment attributes by item id */
         switch (itemId) {
-            case R.id.board_notice: // 공지사항
-                boardUrl = Urls.BOARD_NOTICE;
+            case R.id.board_tech_all:   /* Tech */
+                boardUrl = Urls.TECH_ALL;
                 break;
-            case R.id.board_dding:  // 띵언게시판
-                boardUrl = Urls.BOARD_DDING;
+            case R.id.board_tech_news:  /* IT News & 정보 */
+                boardUrl = Urls.TECH_NEWS;
                 break;
-            case R.id.board_womstory:   // 웜역사관
-                boardUrl = Urls.BOARD_WOMSTORY;
-                new FetchBoard(getContext(), layoutBoard).execute(Urls.BASE_URL, Urls.BOARD_WOMSTORY);
+            case R.id.board_tech_tips:  /* Tips & 강좌 */
+                boardUrl = Urls.TECH_TIPS;
                 break;
-            case R.id.board_latest: // 최신글
-                boardUrl = Urls.BOARD_LATEST;
+            case R.id.board_community_all:  /* 커뮤니티 */
+                boardUrl = Urls.COMMUNITY_ALL;
                 break;
-            case R.id.board_freeboard:  // 자유게시판
-                boardUrl = Urls.BOARD_FREEBOARD;
+            case R.id.board_community_notice:   /* 공지사항 */
+                boardUrl = Urls.COMMUNITY_NOTICE;
                 break;
-            case R.id.board_womsplain:  // 웜스플레인
-                boardUrl = Urls.BOARD_WOMSPLAIN;
+            case R.id.board_community_life: /* 사는얘기 */
+                boardUrl = Urls.COMMUNITY_LIFE;
                 break;
-            case R.id.board_hospital:   // 재활병원
-                boardUrl = Urls.BOARD_HOSPITAL;
+            case R.id.board_community_forum:    /* 포럼 */
+                boardUrl = Urls.COMMUNITY_FORUM;
                 break;
-            case R.id.board_website:    // 사이트건의
-                boardUrl = Urls.BOARD_WEBSITE;
+            case R.id.board_community_event:    /* IT 행사 */
+                boardUrl = Urls.COMMUNITY_EVENT;
                 break;
-            case R.id.board_deathnote:  // 데스노트
-                boardUrl = Urls.BOARD_DEATHNOTE;
+            case R.id.board_community_gathering:    /* 정기모임 */
+                boardUrl = Urls.COMMUNITY_GATHERING;
                 break;
-            case R.id.board_mapo:   // 마포대교밑
-                boardUrl = Urls.BOARD_MAPO;
+            case R.id.board_community_promote:  /* 학원/홍보 */
+                boardUrl = Urls.COMMUNITY_PROMOTE;
                 break;
-            case R.id.best_wonyum:  // 워념글
-                boardUrl = Urls.BEST_WONYUM;
-                break;
-            case R.id.best_dailybest:   // 일간베스트
-                boardUrl = Urls.BEST_DAILYBEST;
-                break;
-            case R.id.best_weeklybest:  // 주간베스트
-                boardUrl = Urls.BEST_WEEKLYBEST;
-                break;
-            case R.id.best_monthlybest: // 월간베스트
-                boardUrl = Urls.BEST_MONTHLYBEST;
-                break;
-            case R.id.board_project:    // 프로젝트
-                boardUrl = Urls.BOARD_PROJECT;
-                break;
-            case R.id.board_global: // Global
-                boardUrl = Urls.BOARD_GLOBAL;
+            case R.id.board_community_columns:  /* 칼럼 */
+                boardUrl = Urls.COLUMNS;
                 break;
             default:
                 break;
@@ -178,8 +162,9 @@ public class BoardFragment extends Fragment implements View.OnClickListener, Vie
         new Thread() {
             public void run() {
                 try  {
-                    String url = Jsoup.connect(Urls.BASE_URL + boardUrl + Urls.PAGE_LAST).execute().url().toString();
-                    lastPage = Integer.parseInt(url.substring(url.lastIndexOf("/")+1));
+                    String page = Jsoup.connect(Urls.BASE_URL + boardUrl).get().select("ul.pagination li").get(12).text();
+                    Log.d("okky", "last page: "+page);
+                    lastPage = Integer.parseInt(page);
                 } catch (Exception e) {
                     e.printStackTrace();
                     lastPage = 1;
@@ -225,7 +210,10 @@ public class BoardFragment extends Fragment implements View.OnClickListener, Vie
             /* Compound url from the string parameters */
             String url = "";
             for (Object o: objects) {
-                url += o.toString();   // board url + page number + query string etc.
+                if (o instanceof Integer) { // Calculating page offset
+                    o = ((int)o - 1) * 20;
+                }
+                url += o.toString();   // board url + page offset
             }
 
             /* Return a document object after connected to given url */
@@ -249,14 +237,16 @@ public class BoardFragment extends Fragment implements View.OnClickListener, Vie
 
             /* Check if document is null */
             if (document == null) {
+                Log.d("okky", "document is null.");
                 return;
             }
 
             /* Select elements from the  document. It varies depending on which site you will parse. */
-            Elements elements = document.select("table.basic tbody tr");
+            Elements elements = document.select("li.list-group-item");
 
             /* Check if selected elements are null. */
             if (elements == null || elements.isEmpty()) {
+                Log.d("okky", "elements are null.");
                 return;
             }
 
@@ -268,39 +258,31 @@ public class BoardFragment extends Fragment implements View.OnClickListener, Vie
             /* Bind each table data with a post item view */
             for (Element e: elements) {
 
-                /* The number of children in an element. */
-                int numOfData = e.select("td").size();
-
-                /* Ignore the notice items */
-                if (e.hasClass("notice")) {
-                    continue;
-                }
-
                 /* Extract strings from the element */
-                link = e.select("td.title a").attr("href");
-                number = e.select("td.number").text();
-                board = e.select("td.repository").text();
-                category = e.select("td.title a span.category-text").text();
-                title = e.select("td.title a").first().ownText();
-                comments = e.select("td.title span.comments-count").text();
-                writer = e.select("td").get(numOfData-4).text();
-                createdAt = e.select("td").get(numOfData-3).text();
-                views = e.select("td").get(numOfData-2).text();
-                likes = e.select("td").get(numOfData-1).text();
+                link = e.select("h5.list-group-item-heading a").attr("href");
+                number = e.select("span.article-id").text();
+                board = e.select("a.label-info").text();
+                title = e.select("h5.list-group-item-heading").text();
+                writer = e.select("a.nickname").text();
+                createdAt = e.select("div.date-created").text();
+                comments = e.select("div.list-group-item-summary li").get(0).text();
+                likes = e.select("div.list-group-item-summary li").get(1).text();
+                views = e.select("div.list-group-item-summary li").get(2).text();
 
                 /* Create a new view model and a view object with extracted strings */
-                Post post = new Post(number, title, writer, createdAt, category, board, views, likes, comments);
+                Post post = new Post(number, title, writer, createdAt, board, views, likes, comments);
                 PostItemView view = new PostItemView(context, post);    // create (inflate) a post item view
                 view.setLink(link);
-
+                
                 /* Add this view to the parent layout */
                 parent.addView(view);
             }
+            
 
             /* Update input-page field (EditText) */
-            page = document.getElementById("posts-page").val();
+            page = document.select("ul.pagination li.active").text();
             currentPage = Integer.parseInt(page);
-            inputPage.setText(currentPage.toString());
+            inputPage.setText(page);
             inputPage.clearFocus();
 
             /* Scroll to the top */
@@ -327,19 +309,19 @@ public class BoardFragment extends Fragment implements View.OnClickListener, Vie
 
             /* First page arrow: Go to the first page */
             case R.id.button_first_page:
-                new FetchBoard(getContext(), layoutBoard).execute(Urls.BASE_URL, boardUrl, Urls.PAGE_FIRST);
+                new FetchBoard(getContext(), layoutBoard).execute(Urls.BASE_URL, boardUrl, 1);
                 break;
 
             /* Last page arrow: Go to the last page */
             case R.id.button_last_page:
-                new FetchBoard(getContext(), layoutBoard).execute(Urls.BASE_URL, boardUrl, Urls.PAGE_LAST);
+                new FetchBoard(getContext(), layoutBoard).execute(Urls.BASE_URL, boardUrl, lastPage);
                 break;
 
              /* Left arrow: Go to the previous page */
             case R.id.button_previous_page:
                 if (currentPage <= 1) { // When it's first page
                     Toast.makeText(getContext(), "첫 페이지입니다.", Toast.LENGTH_LONG).show();
-                    new FetchBoard(getContext(), layoutBoard).execute(Urls.BASE_URL, boardUrl, Urls.PAGE_FIRST);
+                    new FetchBoard(getContext(), layoutBoard).execute(Urls.BASE_URL, boardUrl, 1);
                 } else {
                     new FetchBoard(getContext(), layoutBoard).execute(Urls.BASE_URL, boardUrl, --currentPage);
                 }
@@ -349,7 +331,7 @@ public class BoardFragment extends Fragment implements View.OnClickListener, Vie
             case R.id.button_next_page:
                 if (currentPage >= lastPage) {  // When it's last page
                     Toast.makeText(getContext(), "마지막 페이지입니다.", Toast.LENGTH_LONG).show();
-                    new FetchBoard(getContext(), layoutBoard).execute(Urls.BASE_URL, boardUrl, Urls.PAGE_LAST);
+                    new FetchBoard(getContext(), layoutBoard).execute(Urls.BASE_URL, boardUrl, lastPage);
                 } else {
                     new FetchBoard(getContext(), layoutBoard).execute(Urls.BASE_URL, boardUrl, ++currentPage);
                 }
@@ -371,9 +353,9 @@ public class BoardFragment extends Fragment implements View.OnClickListener, Vie
                     /* Move to the page as user input */
                     int page = Integer.parseInt(((EditText) v).getText().toString());
                     if (page >= lastPage) {
-                        new FetchBoard(getContext(), layoutBoard).execute(Urls.BASE_URL, boardUrl, Urls.PAGE_LAST);
+                        new FetchBoard(getContext(), layoutBoard).execute(Urls.BASE_URL, boardUrl, lastPage);
                     } else if (page < 1) {
-                        new FetchBoard(getContext(), layoutBoard).execute(Urls.BASE_URL, boardUrl, Urls.PAGE_FIRST);
+                        new FetchBoard(getContext(), layoutBoard).execute(Urls.BASE_URL, boardUrl, 1);
                     } else {
                         new FetchBoard(getContext(), layoutBoard).execute(Urls.BASE_URL, boardUrl, page);
                     }

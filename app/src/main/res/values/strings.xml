@@ -17,25 +17,18 @@
     <string name="divider">|</string>
 
     <!-- Menu items -->
-    <string name="board_notice">공지사항</string>
-    <string name="board_dding">띵언게시판</string>
-    <string name="board_womstory">웜역사관</string>
-    <string name="board_project">프로젝트</string>
+    <string name="tech_all">Tech</string>
+    <string name="tech_news">IT News &amp; 정보</string>
+    <string name="tech_tips">Tips &amp; 강좌</string>
 
-    <string name="board_latest">최신글</string>
-    <string name="board_freeboard">자유게시판</string>
-    <string name="board_womsplain">웜스플레인</string>
-    <string name="board_hospital">재활병원</string>
-    <string name="board_website">사이트건의</string>
-    <string name="board_deathnote">데스노트</string>
-    <string name="board_mapo">마포대교밑</string>
+    <string name="community_all">커뮤니티</string>
+    <string name="community_notice">공지사항</string>
+    <string name="community_life">사는얘기</string>
+    <string name="community_forum">포럼</string>
+    <string name="community_event">IT 행사</string>
+    <string name="community_gathering">정기모임</string>
+    <string name="community_promote">학원/홍보</string>
 
-    <string name="best_wonyum">워념글</string>
-    <string name="best_dailybest">일간베스트</string>
-    <string name="best_weeklybest">주간베스트</string>
-    <string name="best_monthlybest">월간베스트</string>
-
-    <string name="board_global">Global</string>
-
+    <string name="columns">칼럼</string>
 
 </resources>

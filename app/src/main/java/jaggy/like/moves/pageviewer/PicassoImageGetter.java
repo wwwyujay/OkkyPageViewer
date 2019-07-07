@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -43,8 +44,13 @@ public class PicassoImageGetter implements Html.ImageGetter {
 
     @Override
     public Drawable getDrawable(String source) {
+        Log.d("okky", "url: "+source);
+        
         if (TextUtils.isEmpty(source)) {
             return null;
+        } else if (source.startsWith("//")) {
+            source = "https:" + source;
+            Log.d("okky", "new url: "+source);
         }
 
         final Uri uri = Uri.parse(source);

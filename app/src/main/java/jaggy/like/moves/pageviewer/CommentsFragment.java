@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import android.widget.ListView;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
@@ -68,7 +68,7 @@ public class CommentsFragment extends DialogFragment implements View.OnClickList
         spinner.startAnimation(rotateAnimation);
 
         /* Fetch comments data */
-        new FetchComments(comments, adapter).execute(Urls.BASE_URL_MOBILE, link);
+        new FetchComments(comments, adapter).execute(Urls.BASE_URL, link);
         
         return view;
     }
@@ -124,7 +124,6 @@ public class CommentsFragment extends DialogFragment implements View.OnClickList
             /* Compound url from the string parameters */
             String url = "";
             for (Object o: objects) {
-                Log.d("womad", ": "+o);
                 url += o.toString();   // board url + page number + query string etc.
             }
 
@@ -149,10 +148,16 @@ public class CommentsFragment extends DialogFragment implements View.OnClickList
             if (document != null)
             {
                 /* Select a list of comment elements from the document */
-                Element commentsListElements = document.getElementsByClass("commentsList").first();
+                Elements els = document.select("li.note-item div.panel-body");
 
-                /* Divide the element into Comment objects */
-                Comment.divideElements(list, commentsListElements.children(), null);
+                /* Create comment objects from extracted strings */
+                for (Element e:els) {
+                    String writer = e.select("a.nickname").text();
+                    String createdAt = e.select("span.timeago").text();
+                    String content = e.select("article.note-text").toString();
+
+                    list.add(new Comment(writer, createdAt, content));
+                }
 
                 /* Update ListView */
                 adapter.notifyDataSetChanged();

@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         initLayout();
-        replaceBoardFragment(R.id.board_latest);   // Fragment shown by default
+        replaceBoardFragment(R.id.board_community_all);   // Fragment shown by default
     }
 
     @Override
